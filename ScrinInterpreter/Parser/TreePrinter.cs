@@ -1,7 +1,7 @@
 using System.Text;
-using ScrinInterpreter.Parsing.Expressions;
+using ScrinInterpreter.Parser.Expressions;
 
-namespace ScrinInterpreter.Parsing;
+namespace ScrinInterpreter.Parser;
 
 public class TreePrinter : IVisitor<string>
 {
@@ -33,15 +33,15 @@ public class TreePrinter : IVisitor<string>
     private string Parenthesize(string name, params Expression[] expressions)
     {
         var result = new StringBuilder();
-        result.Append("(").Append(name);
+        
         foreach (var expr in expressions)
         {
             result.Append(expr.Accept(this));
             result.Append(" ");
         }
 
-        result.Append(")");
+        result.Append(name);
 
         return result.ToString();
     }
-}
+}   
