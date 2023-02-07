@@ -1,20 +1,23 @@
+using ScrinInterpreter.Parsing;
+
 namespace ScrinInterpreter;
 
 public class Scrin
 {
     private Lexer _lexer;
+    private Parser _parser;
     private bool isFaulted = false;
 
     public Scrin()
     {
     }
-    
-    
+
+
     public void ExecuteFromFile(string path)
     {
-        string script = System.IO.File.ReadAllText(path);
+        var script = File.ReadAllText(path);
         Execute(script);
-        if(isFaulted) Environment.Exit(65);
+        if (isFaulted) Environment.Exit(65);
     }
 
     public void ExecuteLineFromPrompt()
@@ -37,11 +40,31 @@ public class Scrin
         {
             Console.WriteLine(token.ToString());
         }
+
+        _parser = new Parser(tokens, this);
+        var test = _parser.Parse();
+
+        var myVisitor = new TreePrinter();
+        var result = myVisitor.Print(test);
+        Console.WriteLine(result);
     }
 
     public void ReportError(int line, string location, string errorMessage) // move to ErrorReporter class
     {
         Console.WriteLine("[line " + line + "] " + location + " Error: " + errorMessage);
         isFaulted = true;
+    }
+
+    public void ReportLexError(int line, string location, string errorMessage) // move to ErrorReporter class
+    {
+        ReportError(line, location, errorMessage);
+    }
+
+    public void ReportParseError(Token token, string message)
+    {
+        if (token.Type == TokenType.EOF)
+            ReportError(token.Line, "at the end", message);
+        else
+            ReportError(token.Line, "at '" + token.Lexeme + "'", message);
     }
 }

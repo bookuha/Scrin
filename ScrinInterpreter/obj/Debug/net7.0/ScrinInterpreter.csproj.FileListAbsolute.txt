@@ -1,0 +1,15 @@
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\bin\Debug\net7.0\ScrinInterpreter.exe
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\bin\Debug\net7.0\ScrinInterpreter.deps.json
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\bin\Debug\net7.0\ScrinInterpreter.runtimeconfig.json
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\bin\Debug\net7.0\ScrinInterpreter.dll
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\bin\Debug\net7.0\ScrinInterpreter.pdb
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\ScrinInterpreter.csproj.AssemblyReference.cache
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\ScrinInterpreter.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\ScrinInterpreter.AssemblyInfoInputs.cache
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\ScrinInterpreter.AssemblyInfo.cs
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\ScrinInterpreter.csproj.CoreCompileInputs.cache
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\ScrinInterpreter.dll
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\refint\ScrinInterpreter.dll
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\ScrinInterpreter.pdb
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\ScrinInterpreter.genruntimeconfig.cache
+C:\Users\booku\RiderProjects\ScrinInterpreter\ScrinInterpreter\obj\Debug\net7.0\ref\ScrinInterpreter.dll
