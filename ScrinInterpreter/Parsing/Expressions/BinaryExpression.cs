@@ -1,15 +1,16 @@
-namespace ScrinInterpreter.Parser.Expressions;
+namespace ScrinInterpreter.Parsing.Expressions;
 
 public class BinaryExpression : Expression
 {
     public Expression Left { get; init; }
     public Expression Right { get; init; }
     public Token Operator { get; init; }
-    public BinaryExpression(Expression left, Expression right, Token @operator)
+
+    public BinaryExpression(Expression left, Token @operator, Expression right)
     {
         Left = left;
-        Right = right;
         Operator = @operator;
+        Right = right;
     }
 
     public override T Accept<T>(IVisitor<T> visitor)

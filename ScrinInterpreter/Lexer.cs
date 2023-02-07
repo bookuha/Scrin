@@ -1,5 +1,3 @@
-using System.Reflection.PortableExecutable;
-
 namespace ScrinInterpreter;
 
 public class Lexer
@@ -11,13 +9,13 @@ public class Lexer
     private int _current;
     private int _line;
 
-    private Scrin? _scrin { get; set; } 
+    private Scrin? _scrin { get; set; }
 
     public Lexer(string source)
     {
         _source = source;
     }
-    
+
     public Lexer(string source, Scrin scrin)
     {
         _source = source;
@@ -35,65 +33,65 @@ public class Lexer
 
             ScanToken();
         }
-        
-        _tokens.Add(new Token(TokenType.EOF,"", null, _line));
+
+        _tokens.Add(new Token(TokenType.EOF, "", null, _line));
         return _tokens;
     }
 
     private void ScanToken()
     {
         char character = Step();
-        
+
         switch (character) // Switch to pattern matching
         {
-            case '(' :
+            case '(':
                 PushToken(
                     MatchCharacter(')') ? TokenType.Fun : TokenType.LeftParen
-                    );
+                );
                 break;
-            case ')' :
+            case ')':
                 PushToken(TokenType.RightParen);
                 break;
-            case '{' :
+            case '{':
                 PushToken(TokenType.LeftBrace);
                 break;
-            case '}' :
+            case '}':
                 PushToken(TokenType.RightBrace);
                 break;
-            case ',' :
+            case ',':
                 PushToken(TokenType.Comma);
                 break;
-            case '.' :
+            case '.':
                 PushToken(TokenType.Dot);
                 break;
-            case '-' :
+            case '-':
                 PushToken(TokenType.Minus);
                 break;
-            case '+' :
+            case '+':
                 PushToken(TokenType.Plus);
                 break;
-            case ';' :
+            case ';':
                 PushToken(TokenType.Semicolon);
                 break;
-            case '*' :
+            case '*':
                 PushToken(TokenType.Star);
                 break;
-            case '!' :
+            case '!':
                 PushToken(
                     MatchCharacter('=') ? TokenType.BangEqual : TokenType.Bang
                 );
                 break;
-            case '=' :
+            case '=':
                 PushToken(
                     MatchCharacter('=') ? TokenType.EqualEqual : TokenType.Equal
                 );
                 break;
-            case '<' :
+            case '<':
                 PushToken(
                     MatchCharacter('=') ? TokenType.LessEqual : TokenType.Less
                 );
                 break;
-            case '>' :
+            case '>':
                 PushToken(
                     MatchCharacter('=') ? TokenType.GreaterEqual : TokenType.Greater
                 );
@@ -118,30 +116,31 @@ public class Lexer
                 }
                 else
                     PushToken(TokenType.Slash);
+
                 break;
 
-                #region  ignorecharacters
+            #region ignorecharacters
 
             case ' ': break;
             case '\r': break;
             case '\t': break;
-            
+
             case '\n':
                 _line++;
                 break;
 
             #endregion
-            
+
             case '"':
                 PushStringToken(); // name it better
                 break;
-            
+
             default:
                 if (Char.IsLetter(character))
                 {
                     PushIdentifierToken();
                 }
-                
+
                 else if (Char.IsDigit(character))
                 {
                     if (character is '0' && Char.IsDigit(Peek())) // better move it to PushNumberToken i guess
@@ -149,6 +148,7 @@ public class Lexer
                         ReportError(_line, "Integer number must not start with 0");
                         break;
                     }
+
                     PushNumberToken();
                 }
                 else
@@ -158,7 +158,6 @@ public class Lexer
 
                 break;
         }
-        
     }
 
     private void PushIdentifierToken()
@@ -168,7 +167,7 @@ public class Lexer
         string text = _source.Substring(_start, _current - _start);
         bool valueFound = _keywords.TryGetValue(text, out TokenType type);
         if (!valueFound) type = TokenType.Identifier;
-        
+
         PushToken(type);
     }
 
@@ -194,22 +193,22 @@ public class Lexer
 
     private void ReportError(int line, string errorMessage, string location = "")
     {
-         if (_scrin is not null)
-             _scrin.ReportError(_line, location, errorMessage);
-         else
-             Console.WriteLine("No Scrin instance has been set, therefore no error has been displayed");
+        if (_scrin is not null)
+            _scrin.ReportLexError(_line, location, errorMessage);
+        else
+            Console.WriteLine("No Scrin instance has been set, therefore no LEXING error has been displayed");
     }
-    
+
     private bool MatchCharacter(char character)
     {
         if (IsAtEnd()) return false;
-        
+
         if (_source[_current] == character) // simplify
         {
             _current++;
             return true;
         }
-        
+
         else return false;
     }
 
@@ -220,7 +219,9 @@ public class Lexer
 
     private void PushToken(TokenType type, Object literal)
     {
-        string text = _source.Substring(_start, _current - _start); // n-char token = number of symbols between start reading and finish reading pointers
+        string
+            text = _source.Substring(_start,
+                _current - _start); // n-char token = number of symbols between start reading and finish reading pointers
         _tokens.Add(new Token(type, text, literal, _line));
     }
 
@@ -240,7 +241,7 @@ public class Lexer
         if (_current + 1 == _source.Length) return '\0'; // kind of IsAtEnd(). Will be refactored.
         return _source[_current + 1];
     }
-    
+
     private bool IsAtEnd()
     {
         return _current == _source.Length;
@@ -265,10 +266,9 @@ public class Lexer
         string value = _source.Substring(_start + 1, (_current - _start) - 2); // _start + 1 to avoid "
         PushToken(TokenType.String, value);
     }
-    
+
     private void PushNumberToken()
     {
-
         // Handle 0 and 0.n
         while (Char.IsDigit(Peek())) Step();
 
@@ -277,13 +277,10 @@ public class Lexer
             Step();
 
             while (Char.IsDigit(Peek())) Step();
-            
-            // and if we met another . ? well, this is fine since we dont have our primitives as classes
-            
-        }
-        
-        PushToken(TokenType.Number, _source.Substring(_start, _current - _start));
 
+            // and if we met another . ? well, this is fine since we dont have our primitives as classes
+        }
+
+        PushToken(TokenType.Number, _source.Substring(_start, _current - _start));
     }
-    
 }
