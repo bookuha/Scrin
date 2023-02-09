@@ -23,12 +23,19 @@ public class Parser
 
     public Expression Parse()
     {
-        return TryExpression();
+        try
+        {
+            return TryExpression();
+        }
+        catch (ParseException exception)
+        {
+            return null;
+        }
     }
 
     private Expression TryExpression()
     {
-        return TryEquality();
+        return TryTernaryConditional();
     }
 
     private bool MatchAny(params TokenType[] types)
@@ -80,8 +87,40 @@ public class Parser
     {
         return _tokens[_current - 1];
     }
+    
+    private Expression TryComma()
+    {
+        var expr = TryEquality();
+        
+        while (Match(TokenType.Comma))
+        {
+            var oprt = PeekPrevious();
+            var right = TryEquality();
+            expr = new BinaryExpression(expr, oprt, right);
+        }
 
+        return expr;
+    }
 
+    private Expression TryTernaryConditional()
+    {
+        var expr = TryEquality();
+
+        while (Match(TokenType.QuestionMark))
+        {
+            
+            var left = TryExpression();
+            if (Match(TokenType.Semicolon))
+            {
+                expr = new TernaryExpression(expr, left, TryExpression());
+            }
+            else EmitError(PeekPrevious(), "Wrong ternary operator");
+
+        }
+
+        return expr;
+    }
+    
     // So it works looks like that for this case: ( 1==1*2 )
     // Try to evaluate the first token(expression) we meet
     // Having tried each type we eventually decide that this is a primary type expression (literal)  
@@ -174,12 +213,12 @@ public class Parser
 
         if (Match(TokenType.LeftParen))
         {
-            var expr = TryExpression();
+            var expr = TryComma();
             Consume(TokenType.RightParen, ")?");
             return new GroupingExpression(expr);
         }
 
-        return new LiteralExpression(314); // test
+        throw EmitError(Peek(), "Expected expression.");
     }
 
     private Token Consume(TokenType type, string message)
@@ -197,5 +236,30 @@ public class Parser
             Console.WriteLine("No Scrin instance has been set, therefore no error has been displayed");
 
         return new ParseException();
+    }
+
+    private void Synchronize() // We need this to keep parsing even after having errors by jumping out of the statement
+    {
+        Step();
+
+        while (!IsAtEnd())
+        {
+            if (PeekPrevious().Type == TokenType.Semicolon) return; // Indicates that we have just stepped out of the statement
+        }
+
+        switch (Peek().Type) // Indicates that we are about to jump in the next statement
+        {
+            case TokenType.Class:
+            case TokenType.Fun:
+            case TokenType.Var:
+            case TokenType.For:
+            case TokenType.If:
+            case TokenType.While:
+            case TokenType.Print:
+            case TokenType.Return:
+                return;
+        }
+
+        Step();
     }
 }

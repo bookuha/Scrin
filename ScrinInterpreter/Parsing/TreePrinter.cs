@@ -30,6 +30,11 @@ public class TreePrinter : IVisitor<string>
         return Parenthesize(expression.Operator.Lexeme, expression.Right);
     }
 
+    public string VisitTernaryExpression(TernaryExpression expression)
+    {
+        return Parenthesize("?:", expression.Expression, expression.LeftResult, expression.RightResult);
+    }
+
     private string Parenthesize(string name, params Expression[] expressions)
     {
         var result = new StringBuilder();

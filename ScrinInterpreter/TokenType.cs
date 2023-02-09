@@ -15,6 +15,7 @@ public enum TokenType
     Star,
 
     // One or two character tokens.
+    QuestionMark,
     Bang,
     BangEqual,
     Equal,

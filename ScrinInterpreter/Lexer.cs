@@ -83,6 +83,12 @@ public class Lexer
                     MatchCharacter('=') ? TokenType.BangEqual : TokenType.Bang
                 );
                 break;
+            case '?':
+                PushToken(TokenType.QuestionMark);
+                break;
+            case ':':
+                PushToken(TokenType.Semicolon);
+                break;
             case '=' :
                 PushToken(
                     MatchCharacter('=') ? TokenType.EqualEqual : TokenType.Equal
@@ -282,7 +288,7 @@ public class Lexer
             
         }
         
-        PushToken(TokenType.Number, _source.Substring(_start, _current - _start));
+        PushToken(TokenType.Number, Convert.ToDouble(_source.Substring(_start, _current - _start)));
 
     }
     
