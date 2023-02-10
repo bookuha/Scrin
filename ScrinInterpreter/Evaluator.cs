@@ -17,7 +17,7 @@ public class Evaluator : IVisitor<Object>
 
         return expression.Operator.Type switch
         {
-            TokenType.Comma => expression.Right, // todo: Left operand might be a function call with side effects
+            TokenType.Comma =>  right, // todo: Left operand might be a function call with side effects
             TokenType.Minus => (double) left - (double) right,
             TokenType.Plus when left is double l && right is double r => l + r,
             TokenType.Plus when left is string l && right is string r => l + r,
@@ -74,6 +74,11 @@ public class Evaluator : IVisitor<Object>
 
     public object VisitTernaryExpression(TernaryExpression expression)
     {
-        throw new NotImplementedException();
+        var boolToEval = Evaluate(expression.Expression);
+
+        if ((bool)boolToEval) return Evaluate(expression.LeftResult);
+        return Evaluate(expression.RightResult);
+
+
     }
 }
