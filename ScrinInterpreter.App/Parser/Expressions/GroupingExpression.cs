@@ -1,13 +1,13 @@
-namespace ScrinInterpreter.Parsing.Expressions;
+namespace ScrinInterpreter.App.Parser.Expressions;
 
 public class GroupingExpression : Expression
 {
-    public Expression Expression { get; init; }
-
     public GroupingExpression(Expression expression)
     {
         Expression = expression;
     }
+
+    public Expression Expression { get; init; }
 
     public override T Accept<T>(IVisitor<T> visitor)
     {

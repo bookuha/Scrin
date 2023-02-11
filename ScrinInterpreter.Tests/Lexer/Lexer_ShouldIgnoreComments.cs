@@ -1,4 +1,7 @@
+using ScrinInterpreter.App.Lexer;
+
 namespace ScrinInterpreter.Tests.Lexer;
+
 [TestFixture("// 123 \n meow")]
 [TestFixture("// 333 // // \n meow")]
 [TestFixture("// meow \n meow")]
@@ -6,18 +9,18 @@ namespace ScrinInterpreter.Tests.Lexer;
 [TestFixture("/**/ meow")]
 public class Lexer_ShouldIgnoreComments
 {
-    private ScrinInterpreter.Lexer _lexer;
-    private string _testString;
+    [SetUp]
+    public void SetUp()
+    {
+        _lexer = new App.Lexer.Lexer(_testString);
+    }
+
+    private App.Lexer.Lexer _lexer;
+    private readonly string _testString;
 
     public Lexer_ShouldIgnoreComments(string testString)
     {
         _testString = testString;
-    }
-
-    [SetUp]
-    public void SetUp()
-    {
-        _lexer = new ScrinInterpreter.Lexer(_testString);
     }
 
     [Test]
@@ -25,7 +28,7 @@ public class Lexer_ShouldIgnoreComments
     {
         var result = _lexer.Tokenize()[0];
         Assert.That(
-            result is {Type: TokenType.Identifier, Lexeme: "meow"} 
-            ,Is.True);
+            result is {Type: TokenType.Identifier, Lexeme: "meow"}
+            , Is.True);
     }
 }

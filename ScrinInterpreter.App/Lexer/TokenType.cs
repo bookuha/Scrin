@@ -1,4 +1,4 @@
-namespace ScrinInterpreter;
+namespace ScrinInterpreter.App.Lexer;
 
 public enum TokenType
 {

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrinInterpreter", "ScrinInterpreter\ScrinInterpreter.csproj", "{FA104A02-D3EC-40DB-AE5C-B9A5E1C77F6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrinInterpreter.App", "ScrinInterpreter.App\ScrinInterpreter.App.csproj", "{FA104A02-D3EC-40DB-AE5C-B9A5E1C77F6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrinInterpreter.Tests", "ScrinInterpreter.Tests\ScrinInterpreter.Tests.csproj", "{B71B43C2-8BCA-4DAE-9BE0-1D3C11CB76E9}"
 EndProject

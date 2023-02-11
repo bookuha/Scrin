@@ -1,4 +1,4 @@
-namespace ScrinInterpreter.Parsing;
+namespace ScrinInterpreter.App.Parser;
 
 public class ParseException : Exception
 {

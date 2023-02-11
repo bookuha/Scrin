@@ -1,6 +1,6 @@
-using ScrinInterpreter.Parsing.Expressions;
+using ScrinInterpreter.App.Parser.Expressions;
 
-namespace ScrinInterpreter.Parsing;
+namespace ScrinInterpreter.App;
 
 public interface IVisitor<T>
 {

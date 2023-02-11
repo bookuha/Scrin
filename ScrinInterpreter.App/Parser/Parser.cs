@@ -1,13 +1,12 @@
-using ScrinInterpreter.Parsing.Expressions;
+using ScrinInterpreter.App.Lexer;
+using ScrinInterpreter.App.Parser.Expressions;
 
-namespace ScrinInterpreter.Parsing;
+namespace ScrinInterpreter.App.Parser;
 
 public class Parser
 {
     private readonly List<Token> _tokens;
     private int _current;
-
-    private Scrin? _scrin { get; }
 
     public Parser(List<Token> tokens)
     {
@@ -19,6 +18,8 @@ public class Parser
         _tokens = tokens;
         _scrin = scrin;
     }
+
+    private Scrin? _scrin { get; }
 
 
     public Expression Parse()
@@ -87,11 +88,11 @@ public class Parser
     {
         return _tokens[_current - 1];
     }
-    
+
     private Expression TryComma()
     {
         var expr = TryEquality();
-        
+
         while (Match(TokenType.Comma))
         {
             var oprt = PeekPrevious();
@@ -108,19 +109,15 @@ public class Parser
 
         while (Match(TokenType.QuestionMark))
         {
-            
             var left = TryExpression();
             if (Match(TokenType.Semicolon))
-            {
                 expr = new TernaryExpression(expr, left, TryExpression());
-            }
             else EmitError(PeekPrevious(), "Wrong ternary operator");
-
         }
 
         return expr;
     }
-    
+
     // So it works looks like that for this case: ( 1==1*2 )
     // Try to evaluate the first token(expression) we meet
     // Having tried each type we eventually decide that this is a primary type expression (literal)  
@@ -243,9 +240,8 @@ public class Parser
         Step();
 
         while (!IsAtEnd())
-        {
-            if (PeekPrevious().Type == TokenType.Semicolon) return; // Indicates that we have just stepped out of the statement
-        }
+            if (PeekPrevious().Type == TokenType.Semicolon)
+                return; // Indicates that we have just stepped out of the statement
 
         switch (Peek().Type) // Indicates that we are about to jump in the next statement
         {

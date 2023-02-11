@@ -1,13 +1,13 @@
-using ScrinInterpreter.Parsing;
+using ScrinInterpreter.App.Lexer;
 
-namespace ScrinInterpreter;
+namespace ScrinInterpreter.App;
 
 public class Scrin
 {
-    private Lexer _lexer;
-    private Parser _parser;
     private bool _isFaulted;
-    
+    private Lexer.Lexer _lexer;
+    private Parser.Parser _parser;
+
 
     public void ExecuteFromFile(string path)
     {
@@ -21,7 +21,7 @@ public class Scrin
         while (true)
         {
             Console.Write(">");
-            string? line = Console.ReadLine();
+            var line = Console.ReadLine();
             if (line is null) break;
             Execute(line);
             _isFaulted = false;
@@ -31,18 +31,16 @@ public class Scrin
     private void Execute(string script)
     {
         Console.WriteLine("<// Lexing //>");
-        _lexer = new Lexer(script, this);
-        List<Token> tokens = _lexer.Tokenize();
-        foreach (var token in tokens)
-        {
-            Console.WriteLine(token.ToString());
-        }
-        
+        _lexer = new Lexer.Lexer(script, this);
+        var tokens = _lexer.Tokenize();
+        foreach (var token in tokens) Console.WriteLine(token.ToString());
+
         Console.WriteLine("<// Parsing //>");
-        _parser = new Parser(tokens, this);
+        _parser = new Parser.Parser(tokens, this);
         var testTree = _parser.Parse();
 
-        if(_isFaulted) {
+        if (_isFaulted)
+        {
             Console.WriteLine("Error: The process was faulted.");
         }
         else

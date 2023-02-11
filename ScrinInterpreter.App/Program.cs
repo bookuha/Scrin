@@ -1,4 +1,4 @@
-﻿using ScrinInterpreter;
+﻿using ScrinInterpreter.App;
 
 if (args.Length > 1)
 {
@@ -8,11 +8,11 @@ if (args.Length > 1)
 
 else if (args.Length == 1)
 {
-    Scrin scrin = new Scrin();
+    var scrin = new Scrin();
     scrin.ExecuteFromFile(args[0]);
 }
 else
 {
-    Scrin scrin = new Scrin();
+    var scrin = new Scrin();
     scrin.ExecuteLineFromPrompt();
 }

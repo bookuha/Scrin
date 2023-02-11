@@ -1,15 +1,10 @@
 using System.Text;
-using ScrinInterpreter.Parsing.Expressions;
+using ScrinInterpreter.App.Parser.Expressions;
 
-namespace ScrinInterpreter.Parsing;
+namespace ScrinInterpreter.App;
 
 public class TreePrinter : IVisitor<string>
 {
-    public string Print(Expression expression)
-    {
-        return expression.Accept(this);
-    }
-
     public string VisitBinaryExpression(BinaryExpression expression)
     {
         return Parenthesize(expression.Operator.Lexeme, expression.Left, expression.Right);
@@ -33,6 +28,11 @@ public class TreePrinter : IVisitor<string>
     public string VisitTernaryExpression(TernaryExpression expression)
     {
         return Parenthesize("?:", expression.Expression, expression.LeftResult, expression.RightResult);
+    }
+
+    public string Print(Expression expression)
+    {
+        return expression.Accept(this);
     }
 
     private string Parenthesize(string name, params Expression[] expressions)

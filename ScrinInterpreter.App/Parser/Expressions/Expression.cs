@@ -1,4 +1,4 @@
-namespace ScrinInterpreter.Parsing.Expressions;
+namespace ScrinInterpreter.App.Parser.Expressions;
 
 public abstract class Expression
 {
